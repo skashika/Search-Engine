@@ -1,0 +1,126 @@
+the application of machine learning algorithm in underwriting process
+abstract . 
+this paper firstly analyses the actual underwriting methods of chinese life insurance companies ,  and points out the merits and shortcomings of these methods .  then the incomplete database of insurance company is mined by the data mining's association rule algorithm .  thirdly the support vector machine (svm) is applied to the underwriting process to classify the applicants .  finally the directions for improving this algorithm are pointed out .  the algorithm proposed in this paper has promising future in underwriting process . 
+published in .  2005 international conference on machine learning and cybernetics
+date of conference .  18-21 aug .  2005
+date added to ieee xplore .  07 november 2005
+print isbn .  0-7803-9091-1
+ issn information . 
+inspec accession number .  8761678
+doi .  10 . 1109/icmlc . 2005 . 1527552
+publisher .  ieee
+conference location .  guangzhou ,  china ,  china
+section 1 . introduction
+at present ,  taking into consideration of the applicant's most decisive hazards in the health statement and other extensive information regarding occupation ,  family background ,  income ,  and so forth has been the underwriting process of life insurance companies in china [1] ,  [2] ,  [3] .  firstly ,  let r denote the risk variable .  let x1 , x2 , … .  , xn be the hazard variables .  if there is a hazard (e . g .  the applicant smokes) and this hazard is denoted by xi ,  then xi=e .  the influence of this hazard to the future lifetime of the applicant determines how much e is .  set xi=0 ,  if this hazard does not exist .  after every xi(i=1 , 2 , …n) is evaluated ,  calculate rr=?j=1nxj by .  then one can get underwriting result after considering how much r is .  if r is less than one critical value ,  the application of policy is acceptable .  otherwise the applicant is declined .  the content of personal statement and the physical examination are primarily determined by the benefit amount and the age of applicants .  the larger the amount of benifit is ,  the stricter the health examination will be .  the merit of this strategy is that the process is very simple to execute and it is in favor of cutting down the running expenses .  but the shortcomings are obvious .  the formers of this operation neglect the interrelationship between the hazards (the hazards may not be independent) .  they take the hazards into account ,  but they neglect the favorable information .  if two different applicants ,  whose benefit amount ,  age and gender are same ,  have identical values of r ,  then they will have identical underwriting results .  but they may have different risk .  this operation can find high-risk applicants ,  but may not be good at finding moderate-risk applicants .  thus probably we could not ensure the insured pool's risk to be low enough . 
+
+deeper research shows that health statement and other personal information may have nonlinear connections with claim risk .  the traditional underwriting process may neglect some important information .  the relationship between the health statement and claim risk may be very complex and impossible to be described by a function . 
+
+in this paper we proposed a novel algorithm that firstly mines the insured data by association rule [4] ,  [5] ,  trying to find the relationship among all personal statement and physical examination items .  secondly we use support vector machine (svm) [6] ,  [7] to make the underwriting decisions .  finally ,  we choose the parameter of the kernel function by experiment .  this is a novel algorithm that is completely different from traditional operations .  from the experiment result we can see that there are great potentials for the application and the development of it . 
+
+section 2 . association rules (ar) and support vector machine (svm)
+ar [4] ,  [5] mining is an important algorithm in data mining .  ar mining can find interesting associations or relationships among itemsets in the large-scale database .  people become more and more interested in mining association rules in their database .  finding interesting ar in large-scale business database is helpful for making business decisions . 
+
+let i={i1 , i2 , … , in} denote the set of all personal statement items and d={t1 , t2 , … . tm} denote the set of transactions (every transaction denotes a insured with some hazards items) [5] .  each transaction tj represents a partial set tj?i of set i of items .  when all items of set x are presented in transaction tj , tj is said to contain x(x?tj) .  the support level of x is the ratio of the number of transactions that include x to the total number d .  for example ,  assuming x={smoking , chronic disease} ,  the percentage of transactions containing these two items in all transactions is the support level of x .  an association rule is the rule of the form
+x?y
+view sourceright-click on figure for mathml and additional features . which is established between item sets and such that x?i , y?i ,  and xny=? .  the confidence level is evaluated by
+confidence(x?y)=sup port(x?y)sup port(x)
+view sourceright-click on figure for mathml and additional features . and the support level is evaluated by
+sup port(x?y)=sup port(x?y)|d|
+view sourceright-click on figure for mathml and additional features . 
+
+when the lower limits of the confidence level and the support level are given ,  finding association rules that satisfy these requirements from the database becomes a problem in data mining . 
+
+actually ,  the svm [6] ,  [7] is an excellent classification algorithm .  svm is a novel machine learning and patterning recognition algorithm based on statistical learning theory (slt) .  it has outperformed the traditional techniques in various applications such as handwritten digit recognition ,  function approximation problems and probability density estimation .  the svm is founded on structural risk minimization principle .  it can take advantage of the merits of neural network (nn) and overcome the traditional nn's shortcoming of over-learning .  it's an appropriate algorithm for underwriting . 
+
+section 3 . mining the history data using ar
+one of the shortcomings in traditional underwriting operation is that one may neglect the relationship between the applicants' information items .  so the first step of this algorithm is to neaten and mine the insured's personal information and claim data using ar mining .  we try to find the potential association and relationship between these items . 
+
+in insurance practice ,  the amount of benefit determines the number of personal statement and physical examination items .  in general ,  most small benefit and young applicants need no physical examinations .  thus the data of these policyholders is not integrated relatively . 
+
+before the ar mining ,  we must neaten the original data .  in ar mining we need discrete data [4] .  thus we have to transform the continuous data into discrete data .  the transformation method is to divide the definition domain of every continuous item into several intervals ,  then to distribute every value of the item into corresponding interval ,  finally to evaluate the new discrete item variable by the sequence number of the interval to which the original value belongs . 
+
+we adopt the classic apriori algorithm [4] in ar mining .  apriori algorithm is the basis of all ar algorithms in recent researches .  the theory of this algorithm is based on the so-called apriori attribute .  all non-empty subsets of the frequent itemsets must be frequent .  in apriori algorithm we repeat two steps .  connecting and trimming .  in the step of connecting ,  we produce high dimension itemsets by connecting the low dimension ones .  in order to reduce operation complexity ,  in the step of trimming we delete the frequent itemsets which can not exist according to apriori attribute .  these two steps will be repeated until there is no higher dimension itemsets . 
+
+because of the small benefit amount applicants need not have physical examination .  so the insured database lacks some information .  we can't directly use the apriori algorithm that is designed for the integrated database .  but we can estimate the actual support level of one itemset by calculating the minimum possible support ratio (when minimum including) and maximum possible support ratio (when maximum including) [8] ,  [9] . 
+
+we may get some association or relationship between the insured information items in insurance companies' database by means of ar mining .  and we may simplify the data and make some preparation for the next classification process .  the data mining makes great sense for improving the underwriting algorithm . 
+
+section 4 . classifying policy applicants using svm
+let xi=(x1 , x2 , … .  .  , xn) denote the ith policyholder's (or applicant's) personal statement vector ,  whose element xj denotes a health item (e . g .  blood pressure) .  suppose there are three classes .  standard class c1 (in which applicants should be accepted) ,  substandard class c2 (in which applicants may be accepted but with some conditions) and declined class (c3) [1] .  for the simplicity of the description of the model ,  amalgamate c1 and c2 as an accepted class c1 , 2 .  we only study the health and life insurance because the studying of health statement only makes sense for the prediction of disease claim or life status .  we take the policyholders who bought health insurance and claimed at least three times or bought life insurance and died last year as c3 .  and take other policyholders as c1 , 2 .  let yi be decision variable . 
+yi={1-1high-risk-client(c3 , declined) low-risk-client(c1 , 2 , accepted)
+view sourceright-click on figure for mathml and additional features . thus every insured or client is denoted by ?xi , yi? . 
+
+as in practice some of the clients' information is untruthful ,  so we may accept some high-risk clients .  at the same time ,  not all of the declined clients will fall ill or die in a short time .  so this problem is a non-separable case .  the client information space is an input space made up of non-separable patterns . 
+
+theorem (cover ,  1965) [6] tells us .  the nonlinear pattern classification problem has higher probability to be linear-separable after it is projected into a high-dimensional feature space than projected into a low-dimension one . 
+
+we classify the applicants into c1 , 2 and c3 using svm [6] ,  [7] .  the nonlinear function f(x) is used to project the applicants (or policyholders) information vectors into a high dimensional feature space f .  our object is to find a hyperplane in feature space to classify the clients into two classes .  firstly ,  assume that the input data is linear-separable after being projected into the high dimension space .  and . 
+f(x)=[f1(x) , f2(x) , … , fm(x)] , 
+view sourceright-click on figure for mathml and additional features . where m>n . 
+
+then we construct a hyperplane ?tf(x)+b=0 for distinguishing the two classes of c1 , 2 and c3 .  among all hyperplanes separating the two categories ,  let us consider the one that has maximal distance to the closest vector f(x) from the training data .  we call this hyperplane the optimal hyperplane .  the training data is from policyholders' information ,  which satisfies . 
+yi[?10f(xi)+b0]=1(1)
+view sourceright-click on figure for mathml and additional features . 
+
+the vectors that satisfy the equation are called support vector clients (svc) . 
+yi[?t0f(xi)+b0]=1(2)
+view sourceright-click on figure for mathml and additional features . 
+
+one can show that the optimal hyperplane is defined by the consisting of the vector ?0 and the constant b0 that minimize the quadratic form
+q(?)=12?t?(3)
+view sourceright-click on figure for mathml and additional features . subject to constraints . 
+yi[?t0f(xj)+b0]=1 ,  i=1…n(4)
+view sourceright-click on figure for mathml and additional features . 
+
+this optimization problem is the so-called primal problem .  in practice ,  a separating hyperplane may not exist ,  for example ,  if a high noise level causes a large overlap of the classes .  to allow for the possibility of examples violating ,  one introduces slack variables [7] . 
+?i=0 ,  i=1…n(5)
+view sourceright-click on figure for mathml and additional features . along with relaxed constraints
+yi[?t0f(xi)+b0]=1-?i ,  i=1…n(6)
+view sourceright-click on figure for mathml and additional features . 
+
+a classifier that generalizes well is then found by controlling both the classifier capacity (via 12?t?) and the number of training errors ,  minimizing the objective function
+q(? , ?)=12?t?+c?i=1n?i(7)
+view sourceright-click on figure for mathml and additional features . subject to the constraints (5) and (6) ,  for some value of the constant c>0 determining the trade-off .  this constrained optimization problem is dealt with by introducing lagrange multipliers ai=0 and a lagranrian
+-?i=1nai[yi(?tf(xi)+b)-1+?i]j(? , b , a)=12?t?+c?i=1n?i(8)
+view sourceright-click on figure for mathml and additional features . 
+
+the saddle point of the lagranrian (8) determines the solution of this problem .  for this constrained optimization problem we can construct another so-called dual problem .  the solution to the dual problem is the same with that to the primal problem .  and the lagrange multipliers determine the optimal solution .  the dual problem is described as follows .  given training data {(xi , yi)}ni=1 ,  maximize the objective function
+q(a)=?i=1nai-12?i=1n?i=1naiajyiyjk(xi , xj)(9)
+view sourceright-click on figure for mathml and additional features . to find the lagrange multipliers {ai}ni=1 ,  subject to
+0=ai=c i=1 , 2 , … .  .  , n?i=1naidi=0(11)(10)
+view sourceright-click on figure for mathml and additional features . where c is determined by prior knowledge . 
+
+k(xi , xi) is called inner product kernel ,  which can be chosen from polynomial function (xtixj+1)p (p is determined by user) ,  radial basis function (rbf) exp(-12s2?xi-xj?2) ,  two-layer perceptron function tanh (ß0xtixj+ß1) and so on . 
+
+the decision function is . 
+f(x)=sign(?i=1nyiajk(x , xi)+b0)(12)
+view sourceright-click on figure for mathml and additional features . 
+
+in underwriting practice ,  we need firstly evaluate x by the applicant's personal information data .  if f(x)=-1 ,  then accept this applicant .  otherwise we have to decline .  as to the problem of dividing the class c1 , 2 into c1 and c2 ,  we can use svm again .  the process is similar to the former one .  finally ,  the three classes of clients should be separated as in figure 1 . 
+
+figure 1
+figure 1 .  the underwriting result
+view all
+
+section 5 . experiment results
+the data with which we do the experiment are some policyholders' data from one life-insurance company and some simulated data (the proportion is 3 . 4) .  the structure of the data is the actual health statement structure of that life insurance company ,  including personal information items (such as smoking ,  cholesterin ,  hypertension ,  occupation ,  family history ,  fatness ,  cardiopathy ,  hepatitis ,  etc . ) and the risk evaluation variable y (related with the claim records or acts as the decision variable) . 
+
+experiment process . 
+
+data pretreatment ,  including transforming the continuous data into discrete data ,  repair some missing data . 
+
+mining clients health database by ar . 
+
+training svm ,  adopting radial basis function (rbf) kernel exp(-12s2?xi-xj?2) as the kernel function .  we finally get s=7 by considering over the training and testing correct ratio (c .  r . ) simultaneously (see table 1) . 
+
+testing . 
+
+the algorithm of svm is programmed in c++ language ,  and is compiled in visual c++6 . 0 environment .  after set s from 0 . 1 to 1000 ,  train and test the machine .  some of the results are recorded in table 1 . 
+
+table 1 .  performance of different s
+table 1 . 
+the experiment results testify the validity of the algorithm .  but the correct ratios of training and testing are influenced by the scarcity and the missing value of the data .  it is believed the correct ratios will be improved ,  if we would get ample data and some effective data-patching algorithm .  and then the practicability will be improved . 
+
+section 6 . conclusion
+in this paper we apply machine learning algorithms ar and svm to underwriting process .  the experiment result testifies the validity of the algorithm .  the algorithm presented in this paper acknowledges and adequately considers the interrelationships among the health-related information items .  we adopt effective data mining method of ar for mining and analyzing the data .  and make full use of the history data by adopting the svm that shows good generalization performance in the practice .  the process of our algorithm avoids the misplaying and blindness of doing the operation artificially .  along with the accumulation of data and experience ,  getting ample experiment data and finding more effective data-patching algorithm ,  we believe the algorithm will be more precise .  it may make sense in minimizing the total risk of the insured pool and lowering down the premium as the application of the algorithm goes deeper . 
+resource .  yi tan and guo-ji zhang ,  "the application of machine learning algorithm in underwriting process , " 2005 international conference on machine learning and cybernetics ,  guangzhou ,  china ,  2005 ,  pp .  3523-3527 vol .  6 . 

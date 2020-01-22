@@ -1,0 +1,127 @@
+the deployment of an iot network infrastructure ,  as a localised regional service
+abstract . 
+the internet of things (iot) is fast evolving with a wide range of technologies being designated specifically as iot solutions .  studies on such solutions generally reference the specific communication medium while negating the complete architecture of the iot system .  from a system perspective ,  a complete iot solution can be separated into three categories ,  the data collector ,  the communication method and the cloud platform service .  the data collector relates to the embedded system device (or the `things' element) at the source of the application ,  the communication method relates to the network protocol used to send or receive the data and the cloud platform service relates to the facility used to store and process the data collected .  lorawan and lora are `long range' technologies ,  which define the communication method for such iot applied systems .  lora defines the modulation technique ,  that allows for long range communication ,  whereas lorawan defines the communication and system architecture . this paper presents the design architecture and methodology of a fully functioning lorawan based iot system .  such a system can be provided as a service to a given local region ,  by utilizing an end device in conjunction with a lora transceiver ,  a lorawan gateway and a defined cloud platform .  the presented iot system currently serves the region of tallaght (dublin ,  ireland) and its wider area .  as a service ,  the system has been shown to be capable of supporting a wide range of iot based applications . 
+published in .  2019 ieee 5th world forum on internet of things (wf-iot)
+date of conference .  15-18 april 2019
+date added to ieee xplore .  22 july 2019
+ isbn information . 
+inspec accession number .  18848726
+doi .  10 . 1109/wf-iot . 2019 . 8767188
+publisher .  ieee
+conference location .  limerick ,  ireland ,  ireland
+section i . introduction
+the "internet of things" (iot) has become an emerging topic over the last number of years .  it can be described as ,  the connection of devices or ‘things’ across the internet to deliver upon an assigned function .  this mainly comes in the form of devices sending or receiving data .  from a system overview ,  it involves the interconnection of embedded system type devices to a given cloud platform service(s) ,  with communication completed through specific network protocols and interconnections i . e . 
+
+a method for data collection at the source of the application - the embedded system device (or the ‘things’ element) . 
+
+a communication means to send or receive the data - the network protocol . 
+
+a facility to store and process the information gathered - the cloud platform service . 
+
+in the context of wide area networks ,  the ability to provide connectivity for distribution across large geographical areas must support the balance of the delivery of long range communication ,  in tandem ,  with the longevity of the battery supported end device .  this balance can be seen in the technologies emerging under the umbrella of low powered wide area networks .  such technologies aim to provide long-range communication distances at low power .  typically ,  sacrifices to achieve long range and low power affects data rate availability ,  latency and reliability .  for lpwan’s implemented to support an iot system ,  this becomes a trade-off based on requirement .  not all iot application requirements can be met if data rate ,  latency and reliability are critical factors .  however ,  depending on the lpwan deployed ,  such technologies can still meet the requirements of a vast range of iot applications .  applications that only need to exchange a small amount of data can communicate at infrequent times and do not need ,  for example ,  high response times .  research applied to lorawan over time has mainly focused on its operation and performance as a lpwan technology with fewer specific application deployments [1][2][3][4]–[5] in the complete system context .  in this paper ,  an overview of the development of an iot network infrastructure for use as a localised regional service is presented .  the paper discusses the implementation of the proposed three core elements to create an iot infrastructure as a complete system .  an arduino is used to form the basis of the ‘things’ element ,  lora/lorawan forms the communication method and ibm’s iot cloud platform is implemented as the cloud entity .  a design architecture and methodology is presented ,  which has been applied to a real application deployment ,  related to a 6kw wind turbine . 
+
+section ii . basics of lora & lorawan
+lora is a proprietary spread spectrum modulation technique developed by semtech[6] .  the modulation technique is a derivative of chirp spread spectrum .  it utilizes 6 x orthogonal spreading factors and allows trading of data rate for range or power ,  within a consistent bandwidth (typically 125khz) .  this is achieved across a number of defined channels ,  within the 868mhz ism band .  through regulation ,  a duty cycle limitation (1%) is applied as the method of channel access and collision avoidance .  if an end device transmits on one particular channel ,  the time of transmission and a time on air value is recorded to ensure the channel cannot be re-used for a period of time .  possible signal strengths exceeding 150db enable lora to achieve long-range communication .  as lora defines the modulation technique ,  which allows for long range communication ,  the communication and system architecture is defined by lorawan .  using a star configuration ,  a lorawan system includes components such as end devices ,  gateway(s) ,  a network server and an application server .  the gateway acts as the intermediary between end device and a central network server .  the network server has a number of functions including controlling communication and providing security access of end devices .  the application server can be used to group end devices and their messages as related to particular applications .  bi-directional communication is available ,  however ,  message acknowledgement can be disabled to improve performance .  payload sizes range up to 250 bytes .  using lora modulation ,  data rates range from 0 . 3-37 . 5 kbps [7][8]–[9] . 
+
+section iii . message queue telemetry transport(mqtt)
+in order to transfer the data messages to a storage centre ,  an mqtt broker is required .  mqtt is a lightweight network protocol that has been adopted as an iot connectivity protocol .  developed by ibm in the late 1990’s ,  it is implemented on top of the tcp/ip protocol stack and is suited towards high latency and limited bandwidth network devices .  mqtt operates on a publish and subscribe model ,  where message ‘topics’ are used to categorized the mqtt messages .  the topic can be specific to the type of data sent by an end device e . g .  an end device could be publishing data to a topic called "temperature" .  the protocol requires a mqtt broker in order to satisfy the publish and subscribe model .  any entity that can send or receive data to the mqtt broker is known as a client .  clients can subscribe to a message "topic" in order to receive the messages published by another client [10] ,  [11] . 
+
+section iv . implementation
+a .  end device
+overall ,  there are two options for the end device choice ,  off shelf or modular in type .  for this study ,  in order to support the concept of delivering an iot system as a service ,  a modular type end device was chosen .  this end device choice was based on the following desired attributes . 
+
+simplicity of use ,  in terms of the development environment . 
+
+versatility ,  in terms of application deployment . 
+
+reproducibility ,  in the case of damage or failure . 
+
+small device profile ,  for ease of deployment . 
+
+support for lorawan ,  within the software . 
+
+across both hardware and software ,  the arduino pro mini proved to fit as the microcontroller of choice .  lora modulation was achieved using ‘rf solutions’ ,  lora transceiver radio module [12] .  an arduino version of the ibm lmic library for lorawan is widely available [13] and has been applied in this research project .  fig .  1 illustrates the end device produced on pcb .  the modular design of the end device allows for ease of reproducibility ,  where the arduino and its development environment ,  caters towards simplicity of use and flexibility in functionality . 
+
+figure 1
+fig .  1 . 
+lorawan end device
+
+view all
+
+b .  gateway
+the gateway deployed was the multiconnect conduit ip67 base station model .  mtcdtip-leu1-220l-868-op .  a 3dbi dipole antenna was connected to the gateway .  transmit power of the gateway was set to 26dbm .  fig .  2 illustrates the gateway unit and antenna presently installed on the campus roof of technological university dublin – tallaght campus ,  approximately 19 metres from the ground . 
+
+figure 2
+fig .  2 . 
+lorawan gateway installation
+
+view all
+
+the gateway was also configured in network server mode ,  meaning the unit acts as a gateway and network server .  the gateway uses node red as its programmable connection interface . 
+
+c .  ibm iot cloud platform
+in order to pass data from the lorawan network into the ibm cloud platform ,  an mqtt broker is required .  within ibm’s iot cloud platform ,  the mqtt broker is already established .  in addition ,  there are some intermediates services required to complete the connection between the end device and the cloud entity .  the following ibm cloud services were required ,  as part of the design architecture . 
+
+1) internet of things platform
+this provides access for registered devices/gateways to the cloud services .  it allows for end device and gateway management ,  monitoring of end device real time data ,  monitoring of events/alerts and it also provides secure connectivity within the iot system . 
+
+2) cloudant
+this is a nosql json document store that is optimized for handling heavy workloads of concurrent reads and writes in the cloud .  it is an always on service and caters towards fast growing workloads .  it is a fully managed ,  database as a service (dbaas) ,  running on ibm cloud as a nosql type database . 
+
+3) db2 warehouse on cloud
+this is a fully managed sql database service in the cloud .  it is optimised for analytical workloads catered towards high performance processing of scale . 
+
+fig .  4 represents the design architecture and methodology of the full iot system .  in order to interconnect the lora gateway to ibm cloud and its services ,  the iot cloud platform service must be created to which the lora gateway is registered .  a node red cloud foundry application instance is also created .  cloud foundry is an open source platform as a service(paas) ,  it allows for quick creation and deployments of applications on the cloud .  it is not vendor specific and does not restrict the developer into proprietary software or cloud infrastructure .  in this case ,  a node red cloud foundry application is created which is linked and connected to the ibm iot platform service .  data is passed through this iot platform service ,  from the gateway and subsequently directed to the connected cloud foundry application .  within the node red cloud foundry application ,  a flow program is developed to push received data to ibms cloudant nosql db service .  cloudant allows for a direct connection to the db2 warehouse service for analysis .  data visualisations can be created where instantaneous data values logged can be presented in web form .  graphs ,  charts ,  gauges etc .  can be applied to give window views of data-sensing behaviour in a real-time processing/analysis context .  node red flows can be further developed to support . 
+
+the creation of alerts as applied to incoming data . 
+
+mathematical functional pre-processing of incoming data ,  prior to database insertion . 
+
+data filtering for removal of non-pertinent data that consume valuable cloud storage . 
+
+data stream comparison between end devices . 
+
+event monitoring . 
+
+application of automation triggers . 
+
+section v . application deployment .  wind turbine
+a 6kw downwind self-regulating wind turbine resides within the tallaght campus of technological university dublin .  within the vicinity of the wind turbine ,  a 15m meteorological mast has been installed for the purpose of wind speed and wind direction data collection . 
+
+the design architecture and methodology for the iot system as described in fig .  4 was applied to three designated application metrics located at the meteorological mast i . e .  wind speed at 10m ,  wind speed at 15m and temperature at 2 . 5m .  as noted in fig .  4 ,  node red as a programming interface applies at two junctures ,  at the lora gateway and at the ibm cloud platform . 
+
+a .  lora gateway .  node red configuration
+figure 3
+fig .  3 . 
+lora gateway .  node red flow
+
+view all
+
+at the lora gateway ,  a node red program (fig .  3) .  filters the message payload to remove unnecessary information ,  identifies and isolates individual end device messages and finally directs the data to the ibm internet of things platform service . 
+
+b .  ibm cloud .  node red cloud foundry application
+through the node red cloud foundry application we can apply .  pre-processing to data messages ,  define alerts and events rules ,  filter messages and data values ,  assign data values to specific databases and create data visualisations on real time data .  fig .  5 illustrates an example of the node red program flow for the cloud foundry application deployed .  the program flow inserts incoming messages ,  for the wind speed sensor at 10m into the cloudant database (thus completing the path from end device to the cloud platform) .  the program also provides a real-time visualisation view on the incoming data .  the program flow can be directly replicated to accommodate data collection for the temperature sensor and the wind speed sensor at 15m . 
+
+figure 4
+fig .  4 . 
+iot system .  design architecture and methodology
+
+view all
+
+fig .  6 illustrates the cloud foundry application visualisation page (accessed via web browser) ,  for real time data ,  as executed in the node flow in fig .  5 .  flexibility of the program flow allows additional features to be added ,  including event monitoring and alerts . 
+
+figure 5
+fig .  5 . 
+ibm cloud .  node red cloud foundry application flow
+
+view all
+
+figure 6
+fig .  6 . 
+real time data visualisation
+
+view all
+
+section vi . conclusion
+this paper has presented a fully functioning iot system as a delivered service for the region of tallaght (dublin ,  ireland) and its surrounding areas .  principally the research has focused towards the implementation of the complete system .  for the iot system currently in place ,  a design architecture and methodology was presented and applied to data metrics relating to a 6kw wind turbine .  the same implementation can be applied to various application requirements of the region .  however ,  limitations of lorawan will restrict the number of applications served ,  such as ,  when fast response times may be required .  limitations of the end device ,  such as battery longevity ,  are specific to each application scenario .  while the majority of research applied to lorawan has focused on operation and performance of the technology with fewer applied deployments ,  the presented research bridges the gap between the communication technology and the cloud platform entity ,  as an implemented system service .  future work will involve expanding the application base of the system ,  as an iot service for the given region ,  with a focus towards end device optimisation ,  within the system and future applications . 
+resource: J. Fox, A. Donnellan and L. Doumen, "The deployment of an IoT network infrastructure, as a localised regional service," 2019 IEEE 5th World Forum on Internet of Things (WF-IoT), Limerick, Ireland, 2019, pp. 319-324.
